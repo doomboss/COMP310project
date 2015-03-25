@@ -1,0 +1,11 @@
+package obamaTwitter;
+
+import twitter4j.*;
+
+public class obamaTwitter {
+	
+	public static void main(String[] args) {
+        
+    }
+	
+}
