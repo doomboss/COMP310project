@@ -14,17 +14,21 @@ public class obamaTwitter {
 	
 	public static void main(String[] args) {
         Twitter twitter = auth();
+        search(twitter);
     }
 	
 	public static Twitter auth(){
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthConsumerKey(CONSUMER_KEY)
-		  .setOAuthConsumerSecret(CONSUMER_SECRET)
-		  .setOAuthAccessToken(ACCESS_KEY)
-		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
-		TwitterFactory tf = new TwitterFactory( cb.build() );
-		Twitter twitter = tf.getInstance();
+	    cb.setDebugEnabled(true)
+	            .setOAuthConsumerKey(CONSUMER_KEY)
+	            .setOAuthConsumerSecret(CONSUMER_SECRET)
+	            .setOAuthAccessToken(ACCESS_KEY)
+	            .setOAuthAccessTokenSecret(ACCESS_SECRET);
+
+	    TwitterFactory tf = new TwitterFactory(cb.build());
+	    Twitter twitter = tf.getInstance();
+	    
+	    twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
 	    
 	    try {
 			Query query = new Query("Obama");
@@ -36,7 +40,20 @@ public class obamaTwitter {
 			e.printStackTrace();
 		}
 	    
+	    
 	    return twitter;
+	}
+	
+	public static void search(Twitter twitter){
+		try {
+			Query query = new Query("Obama");
+			QueryResult result = twitter.search(query);
+			for (Status status : result.getTweets()) {
+			    System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
+			}
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

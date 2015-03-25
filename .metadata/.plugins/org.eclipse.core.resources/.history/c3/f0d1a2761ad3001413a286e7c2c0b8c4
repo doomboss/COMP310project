@@ -18,13 +18,16 @@ public class obamaTwitter {
 	
 	public static Twitter auth(){
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthConsumerKey(CONSUMER_KEY)
-		  .setOAuthConsumerSecret(CONSUMER_SECRET)
-		  .setOAuthAccessToken(ACCESS_KEY)
-		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
-		TwitterFactory tf = new TwitterFactory( cb.build() );
-		Twitter twitter = tf.getInstance();
+	    cb.setDebugEnabled(true)
+	            .setOAuthConsumerKey(CONSUMER_KEY)
+	            .setOAuthConsumerSecret(CONSUMER_SECRET)
+	            .setOAuthAccessToken(ACCESS_KEY)
+	            .setOAuthAccessTokenSecret(ACCESS_SECRET);
+
+	    TwitterFactory tf = new TwitterFactory(cb.build());
+	    Twitter twitter = tf.getInstance();
+	    
+	    twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
 	    
 	    try {
 			Query query = new Query("Obama");

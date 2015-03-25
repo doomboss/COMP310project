@@ -1,9 +1,7 @@
 package obamaTwitter;
 
 import twitter4j.*;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.*;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class obamaTwitter {
 	private final static String CONSUMER_KEY ="zU7A7rt17hmI1XuKTOXzcO0dN";
@@ -14,19 +12,27 @@ public class obamaTwitter {
 	
 	public static void main(String[] args) {
         Twitter twitter = auth();
+        search(twitter);
     }
 	
 	public static Twitter auth(){
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthConsumerKey(CONSUMER_KEY)
-		  .setOAuthConsumerSecret(CONSUMER_SECRET)
-		  .setOAuthAccessToken(ACCESS_KEY)
-		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
-		TwitterFactory tf = new TwitterFactory( cb.build() );
-		Twitter twitter = tf.getInstance();
+	    cb.setDebugEnabled(true)
+	            .setOAuthConsumerKey(CONSUMER_KEY)
+	            .setOAuthConsumerSecret(CONSUMER_SECRET)
+	            .setOAuthAccessToken(ACCESS_KEY)
+	            .setOAuthAccessTokenSecret(ACCESS_SECRET);
+
+	    TwitterFactory tf = new TwitterFactory(cb.build());
+	    Twitter twitter = tf.getInstance();
 	    
-	    try {
+	    twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
+	    
+	    return twitter;
+	}
+	
+	public static void search(Twitter twitter){
+		try {
 			Query query = new Query("Obama");
 			QueryResult result = twitter.search(query);
 			for (Status status : result.getTweets()) {
@@ -35,8 +41,6 @@ public class obamaTwitter {
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
-	    
-	    return twitter;
 	}
 	
 }

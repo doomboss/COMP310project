@@ -23,7 +23,7 @@ public class obamaTwitter {
 		  .setOAuthConsumerSecret(CONSUMER_SECRET)
 		  .setOAuthAccessToken(ACCESS_KEY)
 		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
-		TwitterFactory tf = new TwitterFactory( cb.build() );
+		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
 	    
 	    try {
