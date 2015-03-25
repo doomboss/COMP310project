@@ -1,0 +1,7 @@
+package obamaTwitter;
+
+import twitterCore;
+
+public class main {
+
+}
