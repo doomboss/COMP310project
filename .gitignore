@@ -1,5 +1,8 @@
 .gradle
 *.class
+bin
+build
+*.orig
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
