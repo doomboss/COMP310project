@@ -1,4 +1,3 @@
-package obamaTwitter;
 
 import twitter4j.*;
 import twitter4j.auth.AccessToken;

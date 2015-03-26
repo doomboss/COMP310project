@@ -1,4 +1,4 @@
-.metadata
+.gradle
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -6,6 +6,9 @@
 
 # Package Files #
 *.jar
+.project
+.classpath
+.settings
 *.war
 *.ear
 
