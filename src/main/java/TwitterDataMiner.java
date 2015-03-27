@@ -4,7 +4,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.*;
 
-public class obamaTwitter {
+public class TwitterDataMiner {
 	private final static String CONSUMER_KEY ="zU7A7rt17hmI1XuKTOXzcO0dN";
 	private final static String CONSUMER_SECRET ="nCo01oLGJRZLhdp3PiOG4LjXKOwFBXIBK1MK91zs6qRRXyVnMQ";
 	private final static String ACCESS_KEY ="96220631-FrkuXYCZxV9hO56KPfblTkZ9fDRVWwrvhcRpkMuBD";
