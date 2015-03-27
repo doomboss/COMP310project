@@ -13,3 +13,41 @@ gradlew eclipse # Get things going in Eclipse
 You can now import your project in eclipse.
 
 You can use http://search.maven.org[Maven Central] to find libraries to include into your project.
+
+# COMP310project
+Final project in comp 310 2015
+
+Discover what the us thinks about a certain topic via twitter.
+
+1.
+Prgoram is given a noun.
+
+2.
+Query twitter for tweets in the past hour with the desinated noun.
+
+3.
+Determines tweets opinion of noun by..
+
+    [adverb] [verb] [given-noun]
+    
+    determine if verb is positive or negative
+      This is done by examining if the word is in a collecition of "positive words", "negative" words or neither
+    determine if adverb exists and if it negates verb.
+      again, checking if the adverb is in a collection of negating words.
+    Maybe search rest of words for words that negate whole statement (eg: "jk")
+
+4.
+Determin geo location of tweet
+  provided by twitter
+
+5.
+Store location and apreciation value (-1,0,1)
+  -1 = poor opinion
+  0 = couldnt determin or neutral
+  1 positive opinion
+
+6.
+Determine percent of each value in each state
+
+7.
+Display data in gui
