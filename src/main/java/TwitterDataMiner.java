@@ -5,10 +5,10 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.*;
 
 public class TwitterDataMiner {
-	private final static String CONSUMER_KEY ="zU7A7rt17hmI1XuKTOXzcO0dN";
-	private final static String CONSUMER_SECRET ="nCo01oLGJRZLhdp3PiOG4LjXKOwFBXIBK1MK91zs6qRRXyVnMQ";
-	private final static String ACCESS_KEY ="96220631-FrkuXYCZxV9hO56KPfblTkZ9fDRVWwrvhcRpkMuBD";
-	private final static String ACCESS_SECRET ="Q7sRFn8ApN3xRi9fsQQkoCB9bwtFD88Ldhpvo9ZR9qoM5";
+	private final static String CONSUMER_KEY ="piFIsLBu5EcjojzcVDacX1RzI";
+	private final static String CONSUMER_SECRET ="3k7ODgDWNuDh2ausIqr00XCSoGAn3Aq3l23rv8iPTjSSjAtsQa";
+	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
+	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
 	
 	
 	public static void main(String[] args) {
@@ -37,5 +37,7 @@ public class TwitterDataMiner {
 	    
 	    return twitter;
 	}
+	
+	
 	
 }
