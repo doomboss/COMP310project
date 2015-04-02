@@ -39,6 +39,9 @@ Determines tweets opinion of noun by..
 4.
 Determin geo location of tweet
   provided by twitter
+  
+  reversegeocoding?
+    https://developers.google.com/maps/documentation/geocoding/?csw=1#ReverseGeocoding
 
 5.
 Store location and apreciation value (-1,0,1)
