@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 
+//put a word to a hashmap and indicates the amount of time it appears
 public class CommonWordDatabase {
 	
 	private HashMap<String, Integer> words = new HashMap<String, Integer>();
@@ -34,6 +35,32 @@ public class CommonWordDatabase {
 		
 	}
 	
+	public void add(String word){
+		if(word.isEmpty()){
+			
+		}
+		if(words.containsKey(word)){
+			words.replace(word, words.get(word)+1);
+		}
+		else{
+			words.put(word, 1);
+		}
+	}
+	
+	/**
+	 * print the entire hashmap out...
+	 */
+	public void printAll(){
+		//loop through the hashmap
+		Set set = this.words.entrySet();
+        Iterator iterator = set.iterator();
+        while(iterator.hasNext()) {
+           Map.Entry mentry = (Map.Entry)iterator.next();
+           System.out.print("key: "+ mentry.getKey() + " & Value: ");
+           System.out.println(mentry.getValue());
+        }
+	}
+	
 	public void saveWordsData() throws IOException{
 		FileOutputStream fos =
                 new FileOutputStream("words.ser");
@@ -51,15 +78,6 @@ public class CommonWordDatabase {
         ois.close();
         fis.close();
         System.out.println("Deserialized HashMap and load it into the system!...");
-        
-        //loop through the hashmap
-        Set set = this.words.entrySet();
-        Iterator iterator = set.iterator();
-        while(iterator.hasNext()) {
-           Map.Entry mentry = (Map.Entry)iterator.next();
-           System.out.print("key: "+ mentry.getKey() + " & Value: ");
-           System.out.println(mentry.getValue());
-        }
         
         
 	}

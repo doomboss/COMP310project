@@ -21,7 +21,8 @@ public class TwitterDataMiner {
 		TwitterDataMiner tdm = new TwitterDataMiner();
 		try{
 			Twitter twitter = tdm.auth();
-			tdm.searchKeyword(twitter, "obama");
+//			tdm.searchKeyword(twitter, "obama");
+			tdm.getCommonWord(twitter, "obama");
 		}
 		catch(IOException ioe){
 			ioe.printStackTrace();
@@ -95,6 +96,37 @@ public class TwitterDataMiner {
 		
 		//get all the words that involves a specific word and put it into hashmap...
 		public void getCommonWord(Twitter twitter, String keyword) throws TwitterException{
+			
+			CommonWordDatabase cwd = new CommonWordDatabase();
+			
+			Query query = new Query(keyword);
+			QueryResult result = twitter.search(query);
+				
+			for (Status status : result.getTweets()) {
+				if(status.getLang().contains("en")){
+					System.out.println(status.getText());
+					for(String tmp : status.getText().split("\\s")){
+						if(!tmp.contains("@") && !tmp.contains("http")){
+//							System.out.println(tmp.replaceAll("[<>\\[\\],|\":.-]\t", ""));
+							//replaceAll("[^a-zA-Z0-9'#\\t\\n\\s]", "") method get rid of non letter and numbers, also tap and enter and spaces
+							cwd.add(tmp.replaceAll("[^a-zA-Z0-9'#\\t\\n\\s]", ""));
+							System.out.println(tmp.replaceAll("[^a-zA-Z0-9#\\t\\n\\s]", ""));
+
+							//example of replace all: replaceAll("[<>\\[\\],-]", "");
+							//replace everything beside letters and numbers: replace(/[^\w\s!?]/g,'');
+						}
+					}
+				}
+						
+//			    System.out.println("Language: "+status.getLang());
+			}
+			try{
+				cwd.saveWordsData();
+			}
+			catch(IOException ioe){
+				ioe.printStackTrace();
+			}
+//			cwd.printAll();
 			
 		}
 	
