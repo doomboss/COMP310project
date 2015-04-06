@@ -132,6 +132,59 @@ public class TwitterDataMiner {
 //			cwd.printAll();
 			
 		}
+		
+		//determine opinion of tweet
+		public int getValueOfTweet(String tweet){
+			String[] words = getThreeWords(tweet);
+			int val = 0;
+			
+			//determine if verb is pro or against
+			/*if (words[0].in(goodWords){
+				val = 1;
+			}else if (words[0].in(badWords){
+				val = -1;
+			}else{
+				return 0;
+			}
+			
+			//determine if adverb negates verb
+			if ( words[1].in(negatingTerms){
+				if (val == 1){
+					val = -1;
+				}else{
+					val = 1;
+				}
+			}
+			
+			//determine if modifier negates verb
+			if ( words[2].in(negatingTerms){
+				if (val == 1){
+					val = -1;
+				}else{
+					val = 1;
+				}
+			}	
+			*/
+			
+			return val;
+		}
+		
+		//gets the noun,verb,and adverb of specific tweet
+		public String [] getThreeWords (String keyword, String tweet){
+			String[] words = new String[2];
+			
+			int keywordLoc = tweet.indexOf(keyword);
+			int verbLoc = tweet.lastIndexOf( " ", keywordLoc);
+			words[0] =tweet.substring(verbLoc+1, keywordLoc -1);
+			
+			int adverbLoc = tweet.lastIndexOf( " ", verbLoc);
+			words[1] = tweet.substring(adverbLoc+1, verbLoc-1);
+			
+			int modifierLoc = tweet.indexOf(" ", adverbLoc);
+			words[2] = tweet.substring(modifierLoc+1,adverbLoc-1);
+			
+			return words;
+		}
 	
 	
 	
