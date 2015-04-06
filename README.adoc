@@ -17,6 +17,8 @@ You can use http://search.maven.org[Maven Central] to find libraries to include 
 # COMP310project
 Final project in comp 310 2015
 
+The project is based off og this: http://nifty.stanford.edu/2013/denero-muralidharan-trends/
+
 Discover what the us thinks about a certain topic via twitter.
 
 1.
