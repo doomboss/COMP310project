@@ -21,6 +21,7 @@ public class Dictionary {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//filepath "resources/positivewords.txt"
+		
 		Dictionary dict = new Dictionary();
 		try {
 			dict.addDictionary("resources/positivewords.txt", "positive");
@@ -40,7 +41,6 @@ public class Dictionary {
 	}
 	
 	public void addDictionary(String filePath, String dictionaryKey) throws IOException, FileNotFoundException{
-		
 		FileReader file = new FileReader(filePath);
 		BufferedReader reader = new BufferedReader(file);
 		String tmp;

@@ -62,13 +62,12 @@ public class CommonWordDatabase {
 	}
 	
 	public void saveWordsData() throws IOException{
-		FileOutputStream fos =
-                new FileOutputStream("words.ser");
-             ObjectOutputStream oos = new ObjectOutputStream(fos);
-             oos.writeObject(this.words);
-             oos.close();
-             fos.close();
-             System.out.printf("Serialized HashMap data is saved in words.ser");
+		FileOutputStream fos = new FileOutputStream("words.ser");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(this.words);
+        oos.close();
+        fos.close();
+        System.out.printf("Serialized HashMap data is saved in words.ser");
 	}
 	
 	public void loadWordsData() throws IOException, ClassNotFoundException{

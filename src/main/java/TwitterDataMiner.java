@@ -1,63 +1,3 @@
-<<<<<<< HEAD
-
-import twitter4j.*;
-import twitter4j.conf.*;
-
-public class TwitterDataMiner {
-	private final static String CONSUMER_KEY ="piFIsLBu5EcjojzcVDacX1RzI";
-	private final static String CONSUMER_SECRET ="3k7ODgDWNuDh2ausIqr00XCSoGAn3Aq3l23rv8iPTjSSjAtsQa";
-	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
-	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
-	private static String keyword;//"noun"
-	
-	
-	public static void main(String[] args) {
-        Twitter twitter = auth();
-        keyword = getNoun();
-        
-    }
-	
-	//returns authenticated twitter instance for use
-	public static Twitter auth(){
-		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthConsumerKey(CONSUMER_KEY)
-		  .setOAuthConsumerSecret(CONSUMER_SECRET)
-		  .setOAuthAccessToken(ACCESS_KEY)
-		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
-		TwitterFactory tf = new TwitterFactory( cb.build() );
-		Twitter twitter = tf.getInstance();
-	    return twitter;
-	}
-	public static String getNoun(){
-		//TODO: retrieves keyword from user
-		return "";
-	}	
-	
-	public static QueryResult DoQuery(Twitter twitter){
-		try {
-			Query query = new Query("Obama");
-			QueryResult result = twitter.search(query);
-			return result;
-		} catch (TwitterException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public static TwitterData[] getTwitterData(QueryResult results){
-		//TODO:convert query into array of twitterData
-		return null;
-	}
-	
-	public static int StringToOpinion(String tweet,String keyWord){
-		//TODO: takes string and keyword and determine opinion of it
-		return 0;
-	}
-		
-}
-=======
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,12 +16,15 @@ public class TwitterDataMiner {
 	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
 	
 	
+	
 	public static void main(String[] args){
 		TwitterDataMiner tdm = new TwitterDataMiner();
 		try{
 			Twitter twitter = tdm.auth();
 //			tdm.searchKeyword(twitter, "obama");
-			tdm.getCommonWord(twitter, "obama");
+			tdm.searchKeyword(twitter, "obama");
+			System.out.println("");
+			tdm.searchKeyword(twitter, "obama");
 		}
 		catch(IOException ioe){
 			ioe.printStackTrace();
@@ -127,7 +70,8 @@ public class TwitterDataMiner {
 		List<Status> statuses = twitter.getHomeTimeline();
 	    System.out.println("Showing home timeline.");
 	    System.out.println("@"+statuses.get(1).getUser() + ":" +
-	    		statuses.get(1).getText());
+	    		statuses.get(1).getText() );
+	    		
 	    
 //	    for (Status status : statuses) {
 //	        System.out.println("@"+status.getUser().getName() + ":" +
@@ -192,4 +136,3 @@ public class TwitterDataMiner {
 	
 	
 }
->>>>>>> 270c2d7a66e8598bacb9abf6ec5d828d8858b69b
