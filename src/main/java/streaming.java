@@ -6,6 +6,9 @@ public class streaming {
 	private final static String CONSUMER_SECRET ="3k7ODgDWNuDh2ausIqr00XCSoGAn3Aq3l23rv8iPTjSSjAtsQa";
 	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
 	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
+	static int hasLoc = 0;
+	static int dontHazLoc = 0;
+	static double percent = 0;
 	
 	public static void main(String[] args) throws TwitterException {
 		
@@ -17,13 +20,20 @@ public class streaming {
 		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
 		TwitterStream twitterStream = new TwitterStreamFactory(cb.build() ).getInstance();
 		
+		
+		
 		StatusListener listener = new StatusListener() {
 	
 			@Override
 			public void onStatus(Status status) {
 				if (status.getGeoLocation() != null){
+					hasLoc++;
 					System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText() + status.getGeoLocation() + status.getCreatedAt() );
+				}else{
+					dontHazLoc++;
 				}
+				percent = ((double) hasLoc/ (double) dontHazLoc)*100;
+				System.out.println(hasLoc + " / " + dontHazLoc + ":" + percent + "%");
 			}
 		
 			@Override
@@ -54,7 +64,7 @@ public class streaming {
 		 };
 		 
 		FilterQuery filter = new FilterQuery();
-		String[] keywordsArray = { "obama" };
+		String[] keywordsArray = { "a" };
 		String[] language = { "en" };
 		filter.language(language);
 		filter.track(keywordsArray);
