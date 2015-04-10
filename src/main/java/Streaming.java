@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -12,6 +11,7 @@ public class Streaming {
 	private ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
 	private String keyword;
 	private int interval;
+	private final Object lock = new Object();
 	
 	public Streaming(String keyword, int interval){
 		super();
@@ -20,8 +20,11 @@ public class Streaming {
 	}
 	
 	
+	
+	
 	public ArrayList<TwitterData> run() throws TwitterException {
 		
+		//configure
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
 		  .setOAuthConsumerKey(CONSUMER_KEY)
@@ -38,6 +41,13 @@ public class Streaming {
 				if (status.getGeoLocation() != null){
 					twitterDataCollection.add(new TwitterData(status.getText(), placeToString(status.getPlace() ) ));
 					System.out.println(status.getText() + ", STATE= " + placeToString(status.getPlace() ) );
+					
+					if (twitterDataCollection.size() > interval) {
+				          synchronized (lock) {
+				            lock.notify();
+				          }
+				          System.out.println("unlocked");
+				        }
 				}
 			}
 		
@@ -72,12 +82,20 @@ public class Streaming {
 		
 		twitterStream.filter(filter);
 		
-		while (twitterDataCollection.size() < interval ){
-			//makes sure we have enough stuff first. This might be poor practice.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-			
-		}
+		try {
+		      synchronized (lock) {
+		        lock.wait();
+		      }
+		    } catch (InterruptedException e) {
+		      // TODO Auto-generated catch block
+		      e.printStackTrace();
+		    }
+		
 		twitterStream.shutdown();
+		
+		
 		return twitterDataCollection;
+		
 		 
 	}
 	
@@ -85,7 +103,13 @@ public class Streaming {
 		String [] split = new String [1];
 		String fullName = place.getFullName();
 		split = fullName.split(",");
-		return split[1].trim();
+		try {
+			return split[1].trim();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return split[0];
+		}
 	}
 
 }
