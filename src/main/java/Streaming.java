@@ -1,16 +1,25 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class streaming {
+public class Streaming {
 	private final static String CONSUMER_KEY ="piFIsLBu5EcjojzcVDacX1RzI";
 	private final static String CONSUMER_SECRET ="3k7ODgDWNuDh2ausIqr00XCSoGAn3Aq3l23rv8iPTjSSjAtsQa";
 	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
 	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
-	static int hasLoc = 0;
-	static int dontHazLoc = 0;
-	static double percent = 0;
+	private ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
 	
-	public static void main(String[] args) throws TwitterException {
+	private String keyWord;
+	private int population;
+	
+	public Streaming(String keyword, int population){
+		this.keyWord = keyword;
+		this.population = population;
+	}
+	
+	public ArrayList<TwitterData> run() throws TwitterException {
 		
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
@@ -20,20 +29,16 @@ public class streaming {
 		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
 		TwitterStream twitterStream = new TwitterStreamFactory(cb.build() ).getInstance();
 		
-		
+		ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
 		
 		StatusListener listener = new StatusListener() {
 	
 			@Override
 			public void onStatus(Status status) {
 				if (status.getGeoLocation() != null){
-					hasLoc++;
-					System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText() + status.getGeoLocation() + status.getCreatedAt() );
-				}else{
-					dontHazLoc++;
+					twitterDataCollection.add(new TwitterData(status.getText(), placeToString(status.getPlace() ) ));
+					System.out.println(status.getText() + ", STATE= " + placeToString(status.getPlace() ) );
 				}
-				percent = ((double) hasLoc/ (double) dontHazLoc)*100;
-				System.out.println(hasLoc + " / " + dontHazLoc + ":" + percent + "%");
 			}
 		
 			@Override
@@ -64,14 +69,28 @@ public class streaming {
 		 };
 		 
 		FilterQuery filter = new FilterQuery();
-		String[] keywordsArray = { "a" };
+		String[] keywordsArray = { keyWord };
 		String[] language = { "en" };
 		filter.language(language);
 		filter.track(keywordsArray);
 		twitterStream.addListener(listener);
 		
 		twitterStream.filter(filter);
+		
+		while (twitterDataCollection.size() < population ){
+			//makes sure we have enough stuff first. This might be poor practice.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+			
+		}
+		twitterStream.shutdown();
+		return twitterDataCollection;
 		 
+	}
+	
+	private String placeToString(Place place){
+		String [] split = new String [1];
+		String fullName = place.getFullName();
+		split = fullName.split(",");
+		return split[1].trim();
 	}
 }
 

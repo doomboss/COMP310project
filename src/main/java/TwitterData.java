@@ -1,19 +1,36 @@
 import twitter4j.GeoLocation;
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
-
 
 public class TwitterData {
 	private int opinion;
-	private GeoLocation location;
+	private String location;
 	private String tweet;
 	
-	//TODO: create constructor, handler, etc...
+	public TwitterData(int opinion, String tweet, String location){
+		this.opinion = opinion;
+		this.tweet = tweet;
+		this.location = location;
+	}
 	
-
+	public TwitterData(String tweet, String location){
+		this.tweet = tweet;
+		this.location = location;
+		this.generateOpinion();
+	}
+	
+	public void generateOpinion(){
+		//TODO: generate opinion
+	}
+	
+	public int getOpinion(){
+		return this.opinion;
+	}
+	
+	public GeoLocation getLocation(){
+		return this.location;
+	}
+	
+	public String getTweet(){
+		return this.tweet;
+	}
+	
 }
