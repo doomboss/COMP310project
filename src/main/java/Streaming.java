@@ -19,14 +19,6 @@ public class Streaming {
 		this.interval = interval;
 	}
 	
-
-	private String keyWord;
-	private int population;
-	
-	public Streaming(String keyword, int population){
-		this.keyWord = keyword;
-		this.population = population;
-	}
 	
 	public ArrayList<TwitterData> run() throws TwitterException {
 		
@@ -72,7 +64,7 @@ public class Streaming {
 		 };
 		 
 		FilterQuery filter = new FilterQuery();
-		String[] keywordsArray = { keyWord };
+		String[] keywordsArray = { keyword };
 		String[] language = { "en" };
 		filter.language(language);
 		filter.track(keywordsArray);
@@ -80,7 +72,7 @@ public class Streaming {
 		
 		twitterStream.filter(filter);
 		
-		while (twitterDataCollection.size() < population ){
+		while (twitterDataCollection.size() < interval ){
 			//makes sure we have enough stuff first. This might be poor practice.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 			
 		}

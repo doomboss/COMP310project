@@ -25,7 +25,7 @@ public class TwitterData {
 		return this.opinion;
 	}
 	
-	public GeoLocation getLocation(){
+	public String getLocation(){
 		return this.location;
 	}
 	
