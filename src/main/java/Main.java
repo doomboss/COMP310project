@@ -7,6 +7,7 @@ class Main {
 	public static void main(String[] args) throws TwitterException, IOException {
 		//build dictionary
 		SentimentDictionary dictionary = new SentimentDictionary("C:\\Users\\chevalierc\\git\\Project 310\\COMP310project\\src\\main\\java\\dictionary\\sentiments.csv");
+		System.out.println("Dictionary built:" + dictionary.getDictionary().size() );
 		
 		//grab twitter data from stream
 		System.out.println("[About to start Sreaming]");
