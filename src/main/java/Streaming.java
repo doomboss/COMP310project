@@ -10,7 +10,16 @@ public class Streaming {
 	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
 	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
 	private ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
+	private String keyword;
+	private int interval;
 	
+	public Streaming(String keyword, int interval){
+		super();
+		this.keyword = keyword;
+		this.interval = interval;
+	}
+	
+
 	private String keyWord;
 	private int population;
 	
@@ -33,7 +42,6 @@ public class Streaming {
 		
 		StatusListener listener = new StatusListener() {
 	
-			@Override
 			public void onStatus(Status status) {
 				if (status.getGeoLocation() != null){
 					twitterDataCollection.add(new TwitterData(status.getText(), placeToString(status.getPlace() ) ));
@@ -41,27 +49,22 @@ public class Streaming {
 				}
 			}
 		
-			@Override
 			public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
 				System.out.println("Got a status deletion notice id:" + statusDeletionNotice.getStatusId());
 			}
 		
-			@Override
 			 public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
 				 System.out.println("Got track limitation notice:" + numberOfLimitedStatuses);
 			 }
 		
-			 @Override
 			 public void onScrubGeo(long userId, long upToStatusId) {
 				 	System.out.println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
 			 }
 		
-			 @Override
 			 public void onStallWarning(StallWarning warning) {
 				 System.out.println("Got stall warning:" + warning);
 			 }
 		
-			 @Override
 			 public void onException(Exception ex) {
 				 ex.printStackTrace();
 			 }
@@ -92,5 +95,6 @@ public class Streaming {
 		split = fullName.split(",");
 		return split[1].trim();
 	}
+
 }
 

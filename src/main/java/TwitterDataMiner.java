@@ -135,7 +135,7 @@ public class TwitterDataMiner {
 		
 		//determine opinion of tweet
 		public int getValueOfTweet(String tweet){
-			String[] words = getThreeWords(tweet);
+			String[] words = getThreeWords("obama", tweet);
 			int val = 0;
 			
 			//determine if verb is pro or against
