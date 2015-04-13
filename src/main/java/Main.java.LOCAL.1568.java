@@ -2,32 +2,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Map;
+
+
 import twitter4j.TwitterException;
 
 class Main {
-	public static void main(String[] args) throws TwitterException, IOException, InterruptedException {
+	public static void main(String[] args) throws TwitterException, IOException {
 		//build dictionary
-		SentimentDictionary dictionary = new SentimentDictionary();
+		SentimentDictionary dictionary = new SentimentDictionary("C:\\Users\\chevalierc\\git\\Project 310\\COMP310project\\src\\main\\java\\dictionary\\sentiments.csv");
 		System.out.println("Dictionary built. Entries contained: " + dictionary.getDictionary().size() );
 		
 		//grab twitter data from stream
 		System.out.println("[About to start Sreaming]");
 		Streaming tStream = new Streaming("I",10);
-		Thread thread = new Thread(tStream);
-		thread.start();
-//		ArrayList<TwitterData> twitterDataCollection = tStream.run();
-		ArrayList<TwitterData> twitterDataCollection = tStream.getTwitterDataCollection();
+		ArrayList<TwitterData> twitterDataCollection = tStream.run();
 		
 		//generate opinions for each twitter element
-		twitterDataCollection = generateOpinnions(twitterDataCollection,dictionary);
-		
-		//
-		printData(twitterDataCollection);
-		
-			
-	}
-	
-	public static ArrayList<TwitterData> generateOpinnions(ArrayList<TwitterData> twitterDataCollection,SentimentDictionary dictionary){
 		System.out.println("[About to generate oppinions]");
 		TwitterData tempData = null;
 		for (int i = 0; i < twitterDataCollection.size(); i++) {
@@ -35,7 +28,17 @@ class Main {
 			tempData.generateOpinion(dictionary);
 			twitterDataCollection.set(i, tempData);
 		}
-		return twitterDataCollection;
+		
+		//testing
+		for (int i = 0; i < twitterDataCollection.size(); i++) {
+			tempData = twitterDataCollection.get(i);
+			System.out.println(tempData.getLocation() + ": " + tempData.getOpinion() );
+		}
+		
+		//
+		printData(twitterDataCollection);
+		
+			
 	}
 	
 	public static void printData(ArrayList<TwitterData> twitterDataCollection){

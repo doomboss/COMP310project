@@ -5,26 +5,19 @@ import java.util.HashMap;
 import twitter4j.TwitterException;
 
 class Main {
-	public static void main(String[] args) throws TwitterException, IOException, InterruptedException {
+	public static void main(String[] args) throws TwitterException, IOException {
 		//build dictionary
-		SentimentDictionary dictionary = new SentimentDictionary();
-		System.out.println("Dictionary built. Entries contained: " + dictionary.getDictionary().size() );
+		SentimentDictionary dictionary = new SentimentDictionary("C:\\Users\\chevalierc\\git\\Project 310\\COMP310project\\src\\main\\java\\dictionary\\sentiments.csv");
 		
 		//grab twitter data from stream
-		System.out.println("[About to start Sreaming]");
 		Streaming tStream = new Streaming("I",10);
-		Thread thread = new Thread(tStream);
-		thread.start();
-//		ArrayList<TwitterData> twitterDataCollection = tStream.run();
-		ArrayList<TwitterData> twitterDataCollection = tStream.getTwitterDataCollection();
+		ArrayList<TwitterData> twitterDataCollection = tStream.run();
 		
 		//generate opinions for each twitter element
-		twitterDataCollection = generateOpinnions(twitterDataCollection,dictionary);
+		twitterDataCollection = generateOpinnions(twitterDataCollection, dictionary);
 		
-		//
-		printData(twitterDataCollection);
-		
-			
+		//print averages of each state
+		printData(twitterDataCollection);	
 	}
 	
 	public static ArrayList<TwitterData> generateOpinnions(ArrayList<TwitterData> twitterDataCollection,SentimentDictionary dictionary){
@@ -39,6 +32,7 @@ class Main {
 	}
 	
 	public static void printData(ArrayList<TwitterData> twitterDataCollection){
+		System.out.println("");
 		System.out.println("-+-+-+- AVERAGES -+-+-+-");
 		//Compiling averages
 		String [] states = new String[] {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC",
