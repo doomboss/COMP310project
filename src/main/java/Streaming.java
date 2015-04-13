@@ -100,14 +100,14 @@ public class Streaming {
 	}
 	
 	private String placeToString(Place place){
-		String [] split = new String [1];
+		String [] split = new String [2];
 		String fullName = place.getFullName();
 		split = fullName.split(",");
 		try {
 			return split[1].trim();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			return split[0];
 		}
 	}
