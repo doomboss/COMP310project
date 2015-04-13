@@ -1,17 +1,25 @@
 import java.util.ArrayList;
 
+import javax.swing.JTextArea;
+
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class Streaming {
+public class Streaming implements Runnable{
 	private final static String CONSUMER_KEY ="piFIsLBu5EcjojzcVDacX1RzI";
 	private final static String CONSUMER_SECRET ="3k7ODgDWNuDh2ausIqr00XCSoGAn3Aq3l23rv8iPTjSSjAtsQa";
 	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
 	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
 	private ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
+	public ArrayList<TwitterData> getTwitterDataCollection() {
+		return twitterDataCollection;
+	}
+
+
 	private String keyword;
 	private int interval;
 	private final Object lock = new Object();
+	private JTextArea output;
 	
 	public Streaming(String keyword, int interval){
 		super();
@@ -19,10 +27,13 @@ public class Streaming {
 		this.interval = interval;
 	}
 	
+	protected void setOutput(JTextArea output){
+		this.output = output;
+	}
 	
 	
 	
-	public ArrayList<TwitterData> run() throws TwitterException {
+	public void run() {
 		
 		//configure
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -33,7 +44,6 @@ public class Streaming {
 		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
 		TwitterStream twitterStream = new TwitterStreamFactory(cb.build() ).getInstance();
 		
-		ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
 		
 		StatusListener listener = new StatusListener() {
 	
@@ -41,7 +51,7 @@ public class Streaming {
 				if (status.getGeoLocation() != null){
 					twitterDataCollection.add(new TwitterData(status.getText(), placeToString(status.getPlace() ) ));
 					System.out.println(status.getText() + ", STATE= " + placeToString(status.getPlace() ) );
-					
+					output.append(status.getText() + ", STATE= " + placeToString(status.getPlace() ) +"\n");
 					if (twitterDataCollection.size() > interval) {
 				          synchronized (lock) {
 				            lock.notify();
@@ -82,6 +92,7 @@ public class Streaming {
 		
 		twitterStream.filter(filter);
 		
+		while (twitterDataCollection.size() < interval ){
 		try {
 		      synchronized (lock) {
 		        lock.wait();
@@ -94,9 +105,9 @@ public class Streaming {
 		twitterStream.shutdown();
 		
 		
-		return twitterDataCollection;
 		
 		 
+	}
 	}
 	
 	private String placeToString(Place place){

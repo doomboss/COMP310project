@@ -21,10 +21,11 @@ public class TwitterDataMiner {
 		TwitterDataMiner tdm = new TwitterDataMiner();
 		try{
 			Twitter twitter = tdm.auth();
+////			tdm.searchKeyword(twitter, "obama");
 //			tdm.searchKeyword(twitter, "obama");
-			tdm.searchKeyword(twitter, "obama");
-			System.out.println("");
-			tdm.searchKeyword(twitter, "obama");
+//			System.out.println("");
+//			tdm.searchKeyword(twitter, "obama");
+			tdm.getCommonWord(twitter, "obama");
 		}
 		catch(IOException ioe){
 			ioe.printStackTrace();

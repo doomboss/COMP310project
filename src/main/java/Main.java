@@ -10,15 +10,18 @@ import java.util.Map;
 import twitter4j.TwitterException;
 
 class Main {
-	public static void main(String[] args) throws TwitterException, IOException {
+	public static void main(String[] args) throws TwitterException, IOException, InterruptedException {
 		//build dictionary
-		SentimentDictionary dictionary = new SentimentDictionary("C:\\Users\\chevalierc\\git\\Project 310\\COMP310project\\src\\main\\java\\dictionary\\sentiments.csv");
+		SentimentDictionary dictionary = new SentimentDictionary();
 		System.out.println("Dictionary built. Entries contained: " + dictionary.getDictionary().size() );
 		
 		//grab twitter data from stream
 		System.out.println("[About to start Sreaming]");
 		Streaming tStream = new Streaming("I",10);
-		ArrayList<TwitterData> twitterDataCollection = tStream.run();
+		Thread thread = new Thread(tStream);
+		thread.start();
+//		ArrayList<TwitterData> twitterDataCollection = tStream.run();
+		ArrayList<TwitterData> twitterDataCollection = tStream.getTwitterDataCollection();
 		
 		//generate opinions for each twitter element
 		System.out.println("[About to generate oppinions]");
@@ -34,6 +37,8 @@ class Main {
 			tempData = twitterDataCollection.get(i);
 			System.out.println(tempData.getLocation() + ": " + tempData.getOpinion() );
 		}
+		
+		
 		
 		//
 		printData(twitterDataCollection);
