@@ -6,15 +6,13 @@ import twitter4j.TwitterException;
 class Main {
 	public static void main(String[] args) throws TwitterException, IOException {
 		//build dictionary
-		SentimentDictionary dictionary = new SentimentDictionary(); //I removed the hardcoding path
+		SentimentDictionary dictionary = new SentimentDictionary("C:\\Users\\chevalierc\\git\\Project 310\\COMP310project\\src\\main\\java\\dictionary\\sentiments.csv");
 		System.out.println("Dictionary built:" + dictionary.getDictionary().size() );
 		
 		//grab twitter data from stream
 		System.out.println("[About to start Sreaming]");
 		Streaming tStream = new Streaming("I",100);
 		ArrayList<TwitterData> twitterDataCollection = tStream.run();
-		TweetsDatabase td = new TweetsDatabase();
-		td.setTweets(twitterDataCollection);
 		
 		//generate opinions for each twitter element
 		System.out.println("[About to generate oppinions]");
@@ -30,6 +28,8 @@ class Main {
 			tempData = twitterDataCollection.get(i);
 			System.out.println(tempData.getLocation() + ": " + tempData.getOpinion() );
 		}
+		
+		
 		
 		
 		

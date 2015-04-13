@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -24,6 +23,7 @@ public class Streaming {
 	
 	public ArrayList<TwitterData> run() throws TwitterException {
 		
+		//configure
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
 		  .setOAuthConsumerKey(CONSUMER_KEY)
@@ -82,9 +82,9 @@ public class Streaming {
 		twitterStream.filter(filter);
 		
 		while (twitterDataCollection.size() < interval ){
-			//makes sure we have enough stuff first. This might be poor practice.\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-			
-		}
+		      synchronized (lock) {
+		        lock.wait();
+		      }
 		try {
 		      synchronized (lock) {
 		        lock.wait();
@@ -95,6 +95,8 @@ public class Streaming {
 		    }
 		
 		twitterStream.shutdown();
+		
+		
 		return twitterDataCollection;
 		
 		 
