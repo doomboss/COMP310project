@@ -1,37 +1,28 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.FlowLayout;
-
 import javax.swing.JLabel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import javax.swing.BoxLayout;
-
 import java.awt.Component;
-
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-
 public class Frame extends JFrame implements ActionListener{
 
 	private JPanel contentPane;
 	private JTextField keyword;
 	private JButton searchButton;
+	private JButton endButton;
+	private JButton compileButton;
 	private JTextArea output;
+	private Streaming tStream;
 
 	/**
 	 * Launch the application.
@@ -54,11 +45,11 @@ public class Frame extends JFrame implements ActionListener{
 	 */
 	public Frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 1180, 650);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
+		//contentPane.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JPanel panel = new JPanel();
 		panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -79,34 +70,55 @@ public class Frame extends JFrame implements ActionListener{
 		panel.add(searchButton);
 		searchButton.addActionListener(this);
 		
+		endButton = new JButton("End Search");
+		panel.add(endButton);
+		endButton.addActionListener(this);
+		
+		compileButton = new JButton("Compile Results");
+		panel.add(compileButton);
+		compileButton.addActionListener(this);
+		
 		JPanel logpanel = new JPanel();
 		contentPane.add(logpanel);
 		
-		
 		output = new JTextArea();
 		output.setWrapStyleWord(true);
-		output.setRows(8);
-		output.setColumns(50);
+		output.setRows(32);
+		output.setColumns(100);
 		output.setLineWrap(true);
 		JScrollPane jsp = new JScrollPane(output);
-		logpanel.add(jsp);
-		
-		
-		
-		
+		logpanel.add(jsp);	
 	}
 
-	
-	
+	//events
 	public void actionPerformed(ActionEvent ae) {
 		// TODO Auto-generated method stub
 		if(ae.getSource().equals(searchButton)){
-			Streaming tStream = new Streaming(keyword.getText().trim().toLowerCase(),100);
+			tStream = new Streaming(keyword.getText().trim().toLowerCase() );
 			tStream.setOutput(output);
 			Thread thread = new Thread(tStream);
 			try{
 				thread.start();
-				
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		else if(ae.getSource().equals(endButton)){
+			try{
+				tStream.close();//this isn't built yet. I don't know how.
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		else if(ae.getSource().equals(compileButton)){
+			try{
+				ArrayList<TwitterData> td = tStream.getTwitterDataCollection();
+				DataHandler dh = new DataHandler(td);
+				output.append(dh.compileDataAsString() );
 			}
 			catch(Exception e){
 				e.printStackTrace();

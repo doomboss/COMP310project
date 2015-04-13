@@ -2,33 +2,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import twitter4j.TwitterException;
 
-class Main {
-	public static void main(String[] args) throws TwitterException, IOException, InterruptedException {
-		//build dictionary
-		SentimentDictionary dictionary = new SentimentDictionary();
-		System.out.println("Dictionary built. Entries contained: " + dictionary.getDictionary().size() );
-		
-		//grab twitter data from stream
-		System.out.println("[About to start Sreaming]");
-		Streaming tStream = new Streaming("I",10);
-		Thread thread = new Thread(tStream);
-		thread.start();
-//		ArrayList<TwitterData> twitterDataCollection = tStream.run();
-		ArrayList<TwitterData> twitterDataCollection = tStream.getTwitterDataCollection();
-		
-		//generate opinions for each twitter element
-		twitterDataCollection = generateOpinnions(twitterDataCollection,dictionary);
-		
-		//
-		printData(twitterDataCollection);
-		
-			
+public class DataHandler {
+	private ArrayList<TwitterData> twitterDataCollection = null;
+	private final String [] states = new String[] {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC",
+			"DL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
+			"MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "HV", "NH", "NJ",
+			"NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD",
+			"TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"};
+	
+	public  DataHandler (ArrayList<TwitterData> twitterDataCollection) throws IOException{
+		this.twitterDataCollection = twitterDataCollection;	
 	}
 	
-	public static ArrayList<TwitterData> generateOpinnions(ArrayList<TwitterData> twitterDataCollection,SentimentDictionary dictionary){
-		System.out.println("[About to generate oppinions]");
+	public ArrayList<TwitterData> generateOpinnions(ArrayList<TwitterData> twitterDataCollection) throws IOException{
+		//build dictionary
+		SentimentDictionary dictionary = new SentimentDictionary();
+		//generate opinions
 		TwitterData tempData = null;
 		for (int i = 0; i < twitterDataCollection.size(); i++) {
 			tempData = twitterDataCollection.get(i);
@@ -38,15 +28,7 @@ class Main {
 		return twitterDataCollection;
 	}
 	
-	public static void printData(ArrayList<TwitterData> twitterDataCollection){
-		System.out.println("-+-+-+- AVERAGES -+-+-+-");
-		//Compiling averages
-		String [] states = new String[] {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC",
-				"DL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
-				"MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "HV", "NH", "NJ",
-				"NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD",
-				"TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"};
-		
+	public HashMap<String,StateData> generateStateAverageCollection(){
 		HashMap<String,StateData> stateAverageCollection = new HashMap<String,StateData>();
 		for (int i = 0; i < twitterDataCollection.size(); i++) {
 			TwitterData tempData = twitterDataCollection.get(i);
@@ -61,6 +43,13 @@ class Main {
 				}
 			}
 		}
+		return stateAverageCollection;
+	}
+	
+	public void printData() throws IOException{
+		twitterDataCollection = generateOpinnions(twitterDataCollection);
+		HashMap<String,StateData> stateAverageCollection = generateStateAverageCollection();
+		
 		for (int i = 0; i < states.length; i++){
 			if(stateAverageCollection.containsKey(states[i]) ){
 				StateData temp = stateAverageCollection.get(states[i]);
@@ -70,8 +59,22 @@ class Main {
 			}
 		}
 	}
+	
+	public String compileDataAsString () throws IOException{
+		String data = "";
+		twitterDataCollection = generateOpinnions(twitterDataCollection);
+		HashMap<String,StateData> stateAverageCollection = generateStateAverageCollection();
 		
+		for (int i = 0; i < states.length; i++){
+			if(stateAverageCollection.containsKey(states[i]) ){
+				StateData temp = stateAverageCollection.get(states[i]);
+				data = data.concat(states[i]+": " + temp.getAverage() + " \n" );
+			}else{
+				data = data.concat(states[i]+": No Data For This State \n" );
+			}
+		}
 		
-		
-		
+		return data;
+	}
+				
 }

@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-
 import javax.swing.JTextArea;
-
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -11,30 +9,27 @@ public class Streaming implements Runnable{
 	private final static String ACCESS_KEY ="96220631-wcBzyV6XutakQCo2EwnlIY0Ag5aVR5ofYSPgaKQme";
 	private final static String ACCESS_SECRET ="nsKDhCMEky76NO2sIf91oRZbWdZHloPgyTQjWK5F27h09";
 	private ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
-	public ArrayList<TwitterData> getTwitterDataCollection() {
-		return twitterDataCollection;
-	}
-
-
 	private String keyword;
-	private int interval;
-	private final Object lock = new Object();
 	private JTextArea output;
 	
-	public Streaming(String keyword, int interval){
+	public Streaming(String keyword){
 		super();
 		this.keyword = keyword;
-		this.interval = interval;
+	}
+	
+	public ArrayList<TwitterData> getTwitterDataCollection() {
+		return twitterDataCollection;
 	}
 	
 	protected void setOutput(JTextArea output){
 		this.output = output;
 	}
 	
-	
-	
-	public void run() {
-		
+	public void close(){
+		//somehow stop stream
+	}
+
+	public void run() {	
 		//configure
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
@@ -43,21 +38,14 @@ public class Streaming implements Runnable{
 		  .setOAuthAccessToken(ACCESS_KEY)
 		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
 		TwitterStream twitterStream = new TwitterStreamFactory(cb.build() ).getInstance();
-		
-		
+
 		StatusListener listener = new StatusListener() {
 	
 			public void onStatus(Status status) {
 				if (status.getGeoLocation() != null){
 					twitterDataCollection.add(new TwitterData(status.getText(), placeToString(status.getPlace() ) ));
 					System.out.println(status.getText() + ", STATE= " + placeToString(status.getPlace() ) );
-					output.append(status.getText() + ", STATE= " + placeToString(status.getPlace() ) +"\n");
-					if (twitterDataCollection.size() > interval) {
-				          synchronized (lock) {
-				            lock.notify();
-				          }
-				          System.out.println("unlocked");
-				        }
+					output.append(twitterDataCollection.size() + ", STATE= " + placeToString(status.getPlace() ) +": " + status.getText() + "\n");
 				}
 			}
 		
@@ -89,25 +77,7 @@ public class Streaming implements Runnable{
 		filter.language(language);
 		filter.track(keywordsArray);
 		twitterStream.addListener(listener);
-		
 		twitterStream.filter(filter);
-		
-		while (twitterDataCollection.size() < interval ){
-		try {
-		      synchronized (lock) {
-		        lock.wait();
-		      }
-		    } catch (InterruptedException e) {
-		      // TODO Auto-generated catch block
-		      e.printStackTrace();
-		    }
-		
-		twitterStream.shutdown();
-		
-		
-		
-		 
-	}
 	}
 	
 	private String placeToString(Place place){
