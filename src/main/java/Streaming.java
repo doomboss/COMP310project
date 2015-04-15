@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+
 import javax.swing.JTextArea;
+
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -11,6 +13,9 @@ public class Streaming implements Runnable{
 	private ArrayList<TwitterData> twitterDataCollection = new ArrayList<TwitterData>();
 	private String keyword;
 	private JTextArea output;
+	private volatile boolean running = true;
+	private TwitterStream twitterStream;
+	
 	
 	public Streaming(String keyword){
 		super();
@@ -25,8 +30,15 @@ public class Streaming implements Runnable{
 		this.output = output;
 	}
 	
-	public void close(){
+	
+	
+	public void terminate() throws InterruptedException {
 		//somehow stop stream
+		running = false;
+		//throw new InterruptedException("terminated...");
+		//System.exit(0);
+		twitterStream.cleanUp();
+		
 	}
 
 	public void run() {	
@@ -37,7 +49,7 @@ public class Streaming implements Runnable{
 		  .setOAuthConsumerSecret(CONSUMER_SECRET)
 		  .setOAuthAccessToken(ACCESS_KEY)
 		  .setOAuthAccessTokenSecret(ACCESS_SECRET);
-		TwitterStream twitterStream = new TwitterStreamFactory(cb.build() ).getInstance();
+		twitterStream = new TwitterStreamFactory(cb.build() ).getInstance();
 
 		StatusListener listener = new StatusListener() {
 	
@@ -78,6 +90,7 @@ public class Streaming implements Runnable{
 		filter.track(keywordsArray);
 		twitterStream.addListener(listener);
 		twitterStream.filter(filter);
+		
 	}
 	
 	private String placeToString(Place place){

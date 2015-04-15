@@ -23,6 +23,7 @@ public class Frame extends JFrame implements ActionListener{
 	private JButton compileButton;
 	private JTextArea output;
 	private Streaming tStream;
+	private Thread streamingThread;
 
 	/**
 	 * Launch the application.
@@ -96,9 +97,9 @@ public class Frame extends JFrame implements ActionListener{
 		if(ae.getSource().equals(searchButton)){
 			tStream = new Streaming(keyword.getText().trim().toLowerCase() );
 			tStream.setOutput(output);
-			Thread thread = new Thread(tStream);
+			streamingThread = new Thread(tStream);
 			try{
-				thread.start();
+				streamingThread.start();
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -106,8 +107,11 @@ public class Frame extends JFrame implements ActionListener{
 		}
 		
 		else if(ae.getSource().equals(endButton)){
+			System.out.println("Attempting to end the stream...");
 			try{
-				tStream.close();//this isn't built yet. I don't know how.
+				//streamingThread.interrupt();
+				tStream.terminate();//this isn't built yet. I don't know how.
+				
 			}
 			catch(Exception e){
 				e.printStackTrace();
