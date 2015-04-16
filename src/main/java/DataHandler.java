@@ -6,8 +6,8 @@ import java.util.HashMap;
 public class DataHandler {
 	private ArrayList<TwitterData> twitterDataCollection = null;
 	private final String [] states = new String[] {"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC",
-			"DL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
-			"MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "HV", "NH", "NJ",
+			"DL","Fl", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME",
+			"MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "HV", "NH","NV", "NJ",
 			"NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD",
 			"TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"};
 	
@@ -68,9 +68,9 @@ public class DataHandler {
 		for (int i = 0; i < states.length; i++){
 			if(stateAverageCollection.containsKey(states[i]) ){
 				StateData temp = stateAverageCollection.get(states[i]);
-				data = data.concat(states[i]+": " + temp.getAverage() + " \n" );
+				data = data.concat("['" + states[i]+"', " + temp.getAverage() + "], \n" );
 			}else{
-				data = data.concat(states[i]+": No Data For This State \n" );
+				data = data.concat("['" + states[i]+"', " + 0 + "], \n" );
 			}
 		}
 		
